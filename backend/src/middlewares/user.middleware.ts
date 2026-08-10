@@ -1,7 +1,7 @@
 import User from "../models/user.model";
 
 export class UserMiddleware {
-    async verifyUser(req: any, res: any, next: any) {
+    verifyUser = async (req: any, res: any, next: any) => {
         try {
             const USER_ID = req.userId;
 
@@ -11,17 +11,18 @@ export class UserMiddleware {
                 });
             }
 
-            const user = await User.findOne({
-                where: { USER_ID }
+            const USER = await User.findOne({
+                where: { userId: USER_ID }
             });
 
-            if (!user) {
+            if (!USER) {
                 return res.status(401).send({
                     message: "Unauthorized"
                 });
             }
 
-            req.user = user;
+
+            req.user = USER;
 
             next();
         } catch (err) {
