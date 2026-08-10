@@ -22,27 +22,27 @@ export class AuthService {
             this.validateEmail(email);
             this.validatePassword(password);
 
-            const user = await User.findOne({where: {email}});
-            if(!user) {
+            const USER = await User.findOne({where: {email}});
+            if(!USER) {
                 throw new Error("Username or password invalid");
             }
 
-            const hashedPassword = user.get("password") as string;
-            const isMatch = this.isPasswordAMatch(password, hashedPassword ?? null)
-            if(!isMatch) {
+            const HASHED_PASSWORD = USER.get("password") as string;
+            const IS_MATCH = this.isPasswordAMatch(password, HASHED_PASSWORD ?? null)
+            if(!IS_MATCH) {
                 throw new Error("Username or password invalid");
             }
 
-            const userData = user.toJSON();
-            delete userData.password;
+            const USER_DATA = USER.toJSON();
+            delete USER_DATA.password;
 
-            const token = this.generateToken(userData);
+            const TOKEN = this.generateToken(USER_DATA);
 
             return {
                 message: "Sign in successfully",
                 data: {
-                    token,
-                    user: userData
+                    token: TOKEN,
+                    user: USER_DATA
                 }
             }
         } catch (e) {
@@ -58,21 +58,21 @@ export class AuthService {
             this.validateFirstName(firstName);
             this.validateLastName(lastName);
 
-            const hashedPassword = await this.generateHashedPassword(password);
-            const newUser = await User.create({
+            const HASHED_PASSWORD = await this.generateHashedPassword(password);
+            const NEW_USER = await User.create({
                 email,
-                password: hashedPassword,
+                password: HASHED_PASSWORD,
                 firstName,
                 lastName
             })
 
-            await newUser.save();
-            const userData = await newUser.toJSON();
-            delete userData.password;
+            await NEW_USER.save();
+            const USER_DATA = await NEW_USER.toJSON();
+            delete USER_DATA.password;
             return {
                 message: "Sign up successfully",
                 data: {
-                    user: userData
+                    user: USER_DATA
                 }
             };
         } catch (e) {
@@ -114,8 +114,8 @@ export class AuthService {
         }
 
         try {
-            const salt = bcrypt.genSaltSync(Number(process.env.PWD_SALT ?? 10));
-            return await bcrypt.hash(password, salt)
+            const SALT = bcrypt.genSaltSync(Number(process.env.PWD_SALT ?? 10));
+            return await bcrypt.hash(password, SALT)
         }catch (e) {
             throw e
         }
@@ -130,18 +130,18 @@ export class AuthService {
     }
 
     private generateToken(user: any) {
-        const secret = process.env.JWT_SECRET;
-        if(!secret) {
+        const SECRET = process.env.JWT_SECRET;
+        if(!SECRET) {
             throw new Error("ENV JWT_SECRET IS NOT DECLARED");
         }
 
-        const expiresIn = process.env.JWT_EXPIRES_IN;
-        if(!expiresIn) {
+        const EXPIRES_IN = process.env.JWT_EXPIRES_IN;
+        if(!EXPIRES_IN) {
             throw new Error("JWT_EXPIRES_IN is required");
         }
 
         return jwt.sign({
-            data: user.userId
-        }, secret, {expiresIn: expiresIn as jwt.SignOptions["expiresIn"]})
+            userId: user.userId
+        }, SECRET, {expiresIn: EXPIRES_IN as jwt.SignOptions["expiresIn"]})
     }
 }
