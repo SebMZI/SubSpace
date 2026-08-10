@@ -25,8 +25,10 @@ CREATE TABLE IF NOT EXISTS "Contents"  (
 CREATE TABLE IF NOT EXISTS "Tags" (
     "tagId" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     label VARCHAR(50) NOT NULL,
+    "userId" INT NOT NULL,
     "createdAt" DATE NOT NULL,
-    "updatedAt" DATE NOT NULL
+    "updatedAt" DATE NOT NULL,
+    CONSTRAINT fk_tags_user FOREIGN KEY ("userId") REFERENCES "Users"("userId")
 );
 
 CREATE TABLE IF NOT EXISTS "ContentTags" (
