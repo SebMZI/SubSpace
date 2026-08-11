@@ -90,3 +90,9 @@ services:
 volumes:
   postgres_data:
 ```
+
+## Roadmap
+- [ ] Chrome Extension
+
+## Appreciation
+My sincere thanks to [Mylano]([https://github.com/](https://github.com/Mylaano)) for his generous help in designing the frontend.
