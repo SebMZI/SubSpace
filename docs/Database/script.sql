@@ -1,8 +1,7 @@
 CREATE TABLE IF NOT EXISTS "Users" (
     "userId" INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     "email" VARCHAR(255) NOT NULL UNIQUE,
-    "firstName" VARCHAR(150) NOT NULL,
-    "lastName" VARCHAR(150) NOT NULL,
+    "username" VARCHAR(150) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "createdAt" TIMESTAMP NOT NULL,
     "updatedAt" TIMESTAMP NOT NULL

@@ -5,8 +5,7 @@ import jwt from "jsonwebtoken";
 interface Register {
     email: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    username: string;
 }
 
 interface Login {
@@ -55,11 +54,10 @@ export class AuthService {
      * @param body
      */
     async signup(body: Register) {
-        const { email, password, firstName, lastName } = body;
+        const { email, password, username } = body;
         this.validateEmail(email);
         this.validatePassword(password);
-        this.validateFirstName(firstName);
-        this.validateLastName(lastName);
+        this.validateUsername(username);
 
         const USER_FOUND = await User.findOne({where: {email}});
         if(USER_FOUND) {
@@ -70,8 +68,7 @@ export class AuthService {
         const NEW_USER = await User.create({
             email,
             password: HASHED_PASSWORD,
-            firstName,
-            lastName
+            username
         })
 
         await NEW_USER.save();
@@ -110,22 +107,12 @@ export class AuthService {
     }
 
     /**
-     * Check the firstName validity
-     * @param firstName
+     * Check the username validity
+     * @param username
      */
-    private validateFirstName(firstName: string) {
-        if(!firstName) {
-            throw new Error("First name is required");
-        }
-    }
-
-    /**
-     * Check the lastName validity
-     * @param lastName
-     */
-    private validateLastName(lastName: string) {
-        if(!lastName) {
-            throw new Error("Last name is required");
+    private validateUsername(username: string) {
+        if(!username) {
+            throw new Error("Username is required");
         }
     }
 

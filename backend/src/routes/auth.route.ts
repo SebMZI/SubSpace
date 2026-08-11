@@ -63,8 +63,7 @@ AUTH_ROUTER.post("/signin", LIMITER, AUTH_CONTROLLER.signin.bind(AUTH_CONTROLLER
  *             required:
  *               - email
  *               - password
- *               - firstName
- *               - lastName
+ *               - username
  *             properties:
  *               email:
  *                 type: string
@@ -74,12 +73,9 @@ AUTH_ROUTER.post("/signin", LIMITER, AUTH_CONTROLLER.signin.bind(AUTH_CONTROLLER
  *                 type: string
  *                 format: password
  *                 example: secret123
- *               firstName:
+ *               username:
  *                 type: string
- *                 example: john
- *               lastName:
- *                 type: string
- *                 example: doe
+ *                 example: johny19
  *     responses:
  *       201:
  *         description: Account successfully created
