@@ -23,6 +23,7 @@
     "sequelize": "^6.37.8"
   },
   "devDependencies": {
+    "@microsoft/tsdoc": "^0.16.0",
     "@types/bcrypt": "^6.0.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
