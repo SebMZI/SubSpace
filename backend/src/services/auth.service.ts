@@ -17,67 +17,59 @@ interface Login {
 
 export class AuthService {
     async signin(body: Login) {
-        try {
-            const { email, password } = body;
-            this.validateEmail(email);
-            this.validatePassword(password);
+        const { email, password } = body;
+        this.validateEmail(email);
+        this.validatePassword(password);
 
-            const USER = await User.findOne({where: {email}});
-            if(!USER) {
-                throw new Error("Username or password invalid");
+        const USER = await User.findOne({where: {email}});
+        if(!USER) {
+            throw new Error("Username or password invalid");
+        }
+
+        const HASHED_PASSWORD = USER.get("password") as string;
+        const IS_MATCH = this.isPasswordAMatch(password, HASHED_PASSWORD ?? null)
+        if(!IS_MATCH) {
+            throw new Error("Username or password invalid");
+        }
+
+        const USER_DATA = USER.toJSON();
+        delete USER_DATA.password;
+
+        const TOKEN = this.generateToken(USER_DATA);
+
+        return {
+            message: "Sign in successfully",
+            data: {
+                token: TOKEN,
+                user: USER_DATA
             }
-
-            const HASHED_PASSWORD = USER.get("password") as string;
-            const IS_MATCH = this.isPasswordAMatch(password, HASHED_PASSWORD ?? null)
-            if(!IS_MATCH) {
-                throw new Error("Username or password invalid");
-            }
-
-            const USER_DATA = USER.toJSON();
-            delete USER_DATA.password;
-
-            const TOKEN = this.generateToken(USER_DATA);
-
-            return {
-                message: "Sign in successfully",
-                data: {
-                    token: TOKEN,
-                    user: USER_DATA
-                }
-            }
-        } catch (e) {
-           throw e
         }
     }
 
     async signup(body: Register) {
-        try {
-            const { email, password, firstName, lastName } = body;
-            this.validateEmail(email);
-            this.validatePassword(password);
-            this.validateFirstName(firstName);
-            this.validateLastName(lastName);
+        const { email, password, firstName, lastName } = body;
+        this.validateEmail(email);
+        this.validatePassword(password);
+        this.validateFirstName(firstName);
+        this.validateLastName(lastName);
 
-            const HASHED_PASSWORD = await this.generateHashedPassword(password);
-            const NEW_USER = await User.create({
-                email,
-                password: HASHED_PASSWORD,
-                firstName,
-                lastName
-            })
+        const HASHED_PASSWORD = await this.generateHashedPassword(password);
+        const NEW_USER = await User.create({
+            email,
+            password: HASHED_PASSWORD,
+            firstName,
+            lastName
+        })
 
-            await NEW_USER.save();
-            const USER_DATA = await NEW_USER.toJSON();
-            delete USER_DATA.password;
-            return {
-                message: "Sign up successfully",
-                data: {
-                    user: USER_DATA
-                }
-            };
-        } catch (e) {
-            throw e;
-        }
+        await NEW_USER.save();
+        const USER_DATA = await NEW_USER.toJSON();
+        delete USER_DATA.password;
+        return {
+            message: "Sign up successfully",
+            data: {
+                user: USER_DATA
+            }
+        };
     }
 
     private validateEmail(email: string) {

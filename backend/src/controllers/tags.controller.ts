@@ -17,7 +17,7 @@ export class TagsController {
     async addTag(req: any, res: any) {
         try {
             const RESULT = await this.tagsService.addTag(req);
-            res.status(200).send(RESULT);
+            res.status(201).send(RESULT);
         } catch (e) {
             res.status(500).send({
                 message: "Failed to add tag",
