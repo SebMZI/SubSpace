@@ -53,6 +53,11 @@ export class AuthService {
         this.validateFirstName(firstName);
         this.validateLastName(lastName);
 
+        const USER_FOUND = await User.findOne({where: {email}});
+        if(USER_FOUND) {
+            throw new Error("An account already exists");
+        }
+
         const HASHED_PASSWORD = await this.generateHashedPassword(password);
         const NEW_USER = await User.create({
             email,
