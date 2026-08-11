@@ -19,6 +19,6 @@ const Tag = SEQUELIZE.define("Tag", {
             key: "userId",
         }
     }
-})
+}, {timestamps: true})
 
 export default Tag;

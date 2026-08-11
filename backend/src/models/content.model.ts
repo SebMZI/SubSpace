@@ -2,10 +2,14 @@ import {SEQUELIZE} from "../config/db.config";
 import {DataTypes} from "sequelize";
 
 const Content = SEQUELIZE.define("Content", {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+    },
     contentId: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        primaryKey: true,
     },
     title: {
         type: DataTypes.STRING,
@@ -18,11 +22,6 @@ const Content = SEQUELIZE.define("Content", {
     thumbnailUrl: {
         type: DataTypes.STRING,
         allowNull: false,
-    },
-    lastUpdate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
     },
     duration: {
         type: DataTypes.INTEGER,
@@ -44,6 +43,6 @@ const Content = SEQUELIZE.define("Content", {
             key: "userId",
         }
     }
-})
+}, { timestamps: true });
 
 export default Content

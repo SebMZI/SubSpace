@@ -23,7 +23,7 @@ const User = SEQUELIZE.define("User", {
     password: {
         type: DataTypes.STRING,
         allowNull: false
-    }
-})
+    },
+}, {timestamps: true})
 
 export default User;
