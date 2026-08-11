@@ -1,0 +1,123 @@
+import Content from "../models/content.model";
+
+// TODO - Add validation methods
+
+export class ContentService {
+    async getAllContents(req : any){
+        const USER = req.user;
+        if(!USER) {
+            throw new Error("No user found");
+        }
+
+        return await Content.findAll({where: {userId: USER.userId}});
+    }
+
+    async addContent(req : any){
+        const USER = req.user;
+        const {contentId, title, description, thumbnailUrl, duration, channelId, subscriberCount} = req.body;
+
+        if(!USER) {
+            throw new Error("No user found");
+        }
+
+        if(!contentId || !title || !thumbnailUrl) {
+            throw new Error("Please provide all required fields");
+        }
+
+        const EXISTING_CONTENT = await Content.findOne({where: {contentId: contentId, userId: USER.userId}});
+        if(EXISTING_CONTENT) {
+            throw new Error("Content already exists");
+        }
+
+        const content = await Content.create({
+            contentId,
+            title,
+            description: description ?? null,
+            thumbnailUrl,
+            duration: duration ?? null,
+            channelId: channelId ?? null,
+            subscriberCount: subscriberCount ?? null,
+            userId: USER.userId
+        })
+
+        return {
+            message: "Content successfully created",
+            data: {
+                content: content,
+            }
+        }
+    }
+
+    async updateContent(req : any){
+        const USER = req.user;
+        const {id} = req.params;
+        const ID = Number(id);
+        const {title, description, thumbnailUrl, duration, channelId, subscriberCount} = req.body;
+
+        if(!USER) {
+            throw new Error("No user found");
+        }
+
+        if(!ID) {
+            throw new Error("No id found");
+        }
+
+        if(Number.isNaN(ID) || ID <= 0) {
+            throw new Error("Id is not a number");
+        }
+
+        const CONTENT_FOUND = await Content.findOne({where: {id: ID, userId: USER.userId}});
+        if(!CONTENT_FOUND) {
+            throw new Error("No content found with this id");
+        }
+
+        const updateData: any = {};
+
+        if (title !== undefined) updateData.title = title;
+        if (description !== undefined) updateData.description = description;
+        if (thumbnailUrl !== undefined) updateData.thumbnailUrl = thumbnailUrl;
+        if (duration !== undefined) updateData.duration = duration;
+        if (channelId !== undefined) updateData.channelId = channelId;
+        if (subscriberCount !== undefined) {
+            updateData.subscriberCount = subscriberCount;
+        }
+
+        await CONTENT_FOUND.update(updateData);
+
+        return {
+            message: "Content successfully updated",
+            data: {
+                content: CONTENT_FOUND
+            }
+        }
+
+    }
+
+    async deleteContent(req : any){
+        const USER = req.user;
+        const {id} = req.params;
+        const ID = Number(id);
+
+        if(!USER) {
+            throw new Error("No user found");
+        }
+
+        if(!ID) {
+            throw new Error("No id found");
+        }
+
+        if(Number.isNaN(ID) || ID <= 0) {
+            throw new Error("Id is not a number");
+        }
+
+        const CONTENT_FOUND = await Content.findOne({where: {id: ID, userId: USER.userId}});
+        if(!CONTENT_FOUND) {
+            throw new Error("No content found with this id");
+        }
+
+        await CONTENT_FOUND.destroy();
+        return {
+            message: "Content successfully deleted"
+        }
+    }
+}
