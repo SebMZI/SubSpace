@@ -95,4 +95,4 @@ volumes:
 - [ ] Chrome Extension
 
 ## Appreciation
-My sincere thanks to [Mylano]([https://github.com/](https://github.com/Mylaano)) for his generous help in designing the frontend.
+My sincere thanks to [Mylano](https://github.com/Mylaano) for his generous help in designing the frontend.
