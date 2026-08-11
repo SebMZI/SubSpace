@@ -41,7 +41,7 @@ cd frontend
 npm run start
 ```
 
-### Docker Compose (Recommanded)
+### Docker Compose (Recommended)
 Copy/Paste the docker compose file
 ```dockerfile
 services:
