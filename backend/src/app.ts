@@ -5,9 +5,7 @@ import helmet from "helmet";
 import {rateLimit} from "express-rate-limit";
 import {connectDatabase} from "./config/db.config";
 import "./models/associations";
-import AUTH_ROUTER from "./routes/auth.route";
-import TAGS_ROUTER from "./routes/tag.route";
-import CONTENT_ROUTER from "./routes/content.route";
+import API_ROUTES from "./routes/api.routes";
 
 const APP = express();
 const PORT = process.env.PORT || 3000;
@@ -25,14 +23,13 @@ APP.use(GLOBAL_LIMITER);
 APP.use(express.json());
 
 // ROUTES
-APP.use("/auth", AUTH_ROUTER);
-APP.use("/tags", TAGS_ROUTER);
-APP.use("/contents", CONTENT_ROUTER);
+APP.use("/api/v1", API_ROUTES);
+
 APP.use((req: any, res: any)=> {
     res.status(404).send("Not Found");
 })
 // SERVER
 APP.listen(PORT, async () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}/api/v1`);
     await connectDatabase();
 });
