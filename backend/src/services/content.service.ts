@@ -1,4 +1,5 @@
 import Content from "../models/content.model";
+import Tag from "../models/tag.model";
 
 // TODO - Add validation methods
 
@@ -9,12 +10,19 @@ export class ContentService {
             throw new Error("No user found");
         }
 
-        return await Content.findAll({where: {userId: USER.userId}});
+        return await Content.findAll({where: {userId: USER.userId}, include: [
+                {
+                    model: Tag,
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]});
     }
 
     async addContent(req : any){
         const USER = req.user;
-        const {contentId, title, description, thumbnailUrl, duration, channelId, subscriberCount} = req.body;
+        const {contentId, title, description, thumbnailUrl, duration, channelId, subscriberCount, tags} = req.body;
 
         if(!USER) {
             throw new Error("No user found");
@@ -40,6 +48,18 @@ export class ContentService {
             userId: USER.userId
         })
 
+        if(tags && Array.isArray(tags) && tags.length > 0) {
+            const TAGS_FOUND = await Tag.findAll({
+                where: {
+                    tagId: tags,
+                    userId: USER.userId
+                }
+            });
+
+            //@ts-ignore
+            await content.addTags(TAGS_FOUND);
+        }
+
         return {
             message: "Content successfully created",
             data: {
@@ -52,7 +72,7 @@ export class ContentService {
         const USER = req.user;
         const {id} = req.params;
         const ID = Number(id);
-        const {title, description, thumbnailUrl, duration, channelId, subscriberCount} = req.body;
+        const {title, description, thumbnailUrl, duration, channelId, subscriberCount, tags} = req.body;
 
         if(!USER) {
             throw new Error("No user found");
@@ -83,6 +103,18 @@ export class ContentService {
         }
 
         await CONTENT_FOUND.update(updateData);
+
+        if(tags && Array.isArray(tags) && tags.length > 0) {
+            const TAGS_FOUND = await Tag.findAll({
+                where: {
+                    tagId: tags,
+                    userId: USER.userId
+                }
+            });
+
+            //@ts-ignore
+            await CONTENT_FOUND.setTags(TAGS_FOUND);
+        }
 
         return {
             message: "Content successfully updated",
