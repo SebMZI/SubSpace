@@ -3,6 +3,11 @@ import {ContentService} from "../services/content.service";
 export class ContentController {
     constructor(private contentService: ContentService){}
 
+    /**
+     * Handles get Contents user request
+     * @param req - Request
+     * @param res - Response
+     */
     async getAllContents(req : any, res: any) {
         try {
             const RESULT = await this.contentService.getAllContents(req);
@@ -12,6 +17,11 @@ export class ContentController {
         }
     }
 
+    /**
+     * Handles Add content user request
+     * @param req - Request
+     * @param res - Response
+     */
     async addContent(req: any, res: any) {
         try {
             const RESULT = await this.contentService.addContent(req);
@@ -21,6 +31,11 @@ export class ContentController {
         }
     }
 
+    /**
+     * Handles Edit content user request
+     * @param req - Request
+     * @param res - Response
+     */
     async editContent(req: any, res: any) {
         try {
             const RESULT = await this.contentService.updateContent(req);
@@ -30,6 +45,11 @@ export class ContentController {
         }
     }
 
+    /**
+     * Handles delete content user request
+     * @param req - Request
+     * @param res - Response
+     */
     async deleteContent(req: any, res: any) {
         try {
             const RESULT = await this.contentService.deleteContent(req);

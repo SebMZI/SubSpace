@@ -1,6 +1,10 @@
 import Tag from "../models/tag.model";
 
 export class TagsService {
+    /**
+     * Retrieves all tag items associated to the authenticated user
+     * @param req
+     */
     async getTags(req: any) {
         const USER = req.user;
         if(!USER) {
@@ -10,6 +14,10 @@ export class TagsService {
         return await Tag.findAll({where: {userId: USER.userId}});
     }
 
+    /**
+     * Create a new tag item associated to the authenticated user
+     * @param req
+     */
     async addTag(req: any) {
         const USER = req.user;
         if(!USER) {
@@ -39,6 +47,10 @@ export class TagsService {
         }
     }
 
+    /**
+     * Edits the tag item associated to the authenticated user
+     * @param req
+     */
     async editTag(req: any) {
         const USER = req.user;
         const {id} = req.params;
@@ -81,6 +93,10 @@ export class TagsService {
 
     }
 
+    /**
+     * Deletes a tag item associated to the authenticated user
+     * @param req
+     */
     async deleteTag(req: any) {
         const USER = req.user;
         const {id} = req.params;

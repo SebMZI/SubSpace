@@ -16,6 +16,10 @@ interface Login {
 
 
 export class AuthService {
+    /**
+     * Authenticate a user and returns a JWT
+     * @param body
+     */
     async signin(body: Login) {
         const { email, password } = body;
         this.validateEmail(email);
@@ -46,6 +50,10 @@ export class AuthService {
         }
     }
 
+    /**
+     * Register a new user after validating their credentials
+     * @param body
+     */
     async signup(body: Register) {
         const { email, password, firstName, lastName } = body;
         this.validateEmail(email);
@@ -77,6 +85,10 @@ export class AuthService {
         };
     }
 
+    /**
+     * Check the email validity
+     * @param email
+     */
     private validateEmail(email: string) {
         if(!email) {
             throw new Error("email address is required");
@@ -87,24 +99,41 @@ export class AuthService {
         }
     }
 
+    /**
+     * Check the password validity
+     * @param password
+     */
     private validatePassword(password: string) {
         if(!password || password.length < 8) {
             throw new Error("Password must be at least 8 characters");
         }
     }
 
+    /**
+     * Check the firstName validity
+     * @param firstName
+     */
     private validateFirstName(firstName: string) {
         if(!firstName) {
             throw new Error("First name is required");
         }
     }
 
+    /**
+     * Check the lastName validity
+     * @param lastName
+     */
     private validateLastName(lastName: string) {
         if(!lastName) {
             throw new Error("Last name is required");
         }
     }
 
+    /**
+     * Generate a hashed password using an encryption library
+     * @param password
+     * @returns The hashed password
+     */
     private async generateHashedPassword(password: string) {
         if(!password) {
             throw new Error("Password must be at least 8 characters");
@@ -118,6 +147,12 @@ export class AuthService {
         }
     }
 
+    /**
+     * Check if current password matches the password in database
+     * @param password
+     * @param hashedPassword
+     * @returns True if the password match
+     */
     private async isPasswordAMatch(password: string, hashedPassword: string) {
         if(!hashedPassword || !password) {
             throw new Error("Password not found");
@@ -126,6 +161,11 @@ export class AuthService {
         return await bcrypt.compare(password, hashedPassword);
     }
 
+    /**
+     * Generate a token containing user userId
+     * @param user - User data containing the user id
+     * @returns A signed JWT
+     */
     private generateToken(user: any) {
         const SECRET = process.env.JWT_SECRET;
         if(!SECRET) {

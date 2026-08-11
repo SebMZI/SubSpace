@@ -3,6 +3,11 @@ import {AuthService} from "../services/auth.service";
 export class AuthController {
     constructor(private authService: AuthService) {}
 
+    /**
+     * Handles user sign-in request
+     * @param req - Request
+     * @param res - Response
+     */
     signin = async (req: any, res: any) => {
         try {
             const RESULT = await this.authService.signin(req.body);
@@ -14,6 +19,11 @@ export class AuthController {
         }
     }
 
+    /**
+     * Handles user sign-up request
+     * @param req - Request
+     * @param res - Response
+     */
     signup = async (req: any, res: any) => {
         try {
             const RESULT = await this.authService.signup(req.body);

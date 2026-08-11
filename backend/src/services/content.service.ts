@@ -4,6 +4,10 @@ import Tag from "../models/tag.model";
 // TODO - Add validation methods
 
 export class ContentService {
+    /**
+     * Retrieves all content items associated to the authenticated user
+     * @param req
+     */
     async getAllContents(req : any){
         const USER = req.user;
         if(!USER) {
@@ -20,6 +24,10 @@ export class ContentService {
             ]});
     }
 
+    /**
+     * Create a new content item (Channel | Video) associated to the authenticated user
+     * @param req
+     */
     async addContent(req : any){
         const USER = req.user;
         const {contentId, title, description, thumbnailUrl, duration, channelId, subscriberCount, tags} = req.body;
@@ -68,6 +76,10 @@ export class ContentService {
         }
     }
 
+    /**
+     * Updates an existing content item owned by the authenticated user
+     * @param req
+     */
     async updateContent(req : any){
         const USER = req.user;
         const {id} = req.params;
@@ -125,6 +137,10 @@ export class ContentService {
 
     }
 
+    /**
+     * Deletes a content item associated to the authenticated user
+     * @param req
+     */
     async deleteContent(req : any){
         const USER = req.user;
         const {id} = req.params;

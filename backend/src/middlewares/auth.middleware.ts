@@ -5,6 +5,12 @@ interface Payload extends  JwtPayload {
 }
 
 export class AuthMiddleware {
+    /**
+     * Verify user token validity and pass it to the controller
+     * @param request
+     * @param response
+     * @param next
+     */
     verify = (request: any, response: any, next: any) => {
         try {
             const HEADERS = request.headers
@@ -31,6 +37,12 @@ export class AuthMiddleware {
         }
     }
 
+    /**
+     * Get the payload from the token
+     * Returns an object containing the userId
+     * @param token
+     * @private
+     */
     private getTokenPayload(token: string): Payload {
         const SECRET = process.env.JWT_SECRET;
         if(!SECRET) {

@@ -3,6 +3,11 @@ import {TagsService} from "../services/tags.service";
 export class TagsController {
     constructor(private tagsService: TagsService) {}
 
+    /**
+     * Handles Get tags user request
+     * @param req
+     * @param res
+     */
     async getTags(req: any, res: any) {
         try {
             const RESULT = await this.tagsService.getTags(req);
@@ -14,6 +19,11 @@ export class TagsController {
         }
     }
 
+    /**
+     * Handles Add tag user request
+     * @param req
+     * @param res
+     */
     async addTag(req: any, res: any) {
         try {
             const RESULT = await this.tagsService.addTag(req);
@@ -25,6 +35,11 @@ export class TagsController {
         }
     }
 
+    /**
+     * Handles edit tag user request
+     * @param req
+     * @param res
+     */
     async editTag(req: any, res: any) {
         try {
             const RESULT = await this.tagsService.editTag(req);
@@ -36,6 +51,11 @@ export class TagsController {
         }
     }
 
+    /**
+     * Handles delete tag user request
+     * @param req
+     * @param res
+     */
     async deleteTag(req: any, res: any) {
         try {
             const RESULT = await this.tagsService.deleteTag(req);

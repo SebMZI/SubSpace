@@ -1,6 +1,12 @@
 import User from "../models/user.model";
 
 export class UserMiddleware {
+    /**
+     * Verify the validity of the user from token's payload and pass the user to the controller
+     * @param req
+     * @param res
+     * @param next
+     */
     verifyUser = async (req: any, res: any, next: any) => {
         try {
             const USER_ID = req.userId;
@@ -20,7 +26,6 @@ export class UserMiddleware {
                     message: "Unauthorized"
                 });
             }
-
 
             req.user = USER;
 
