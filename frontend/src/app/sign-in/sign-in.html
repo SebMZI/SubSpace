@@ -1,0 +1,22 @@
+<main id="signin">
+  <div class="star-container"></div>
+  <form (submit)="signIn($event)" class="signin-form">
+    <header class="form-header">
+      <img src="./rocket.svg" alt="SubSpace Rocket" class="form-logo">
+      <h1 class="form-title">Log In</h1>
+    </header>
+    <div class="form-fields">
+      <div class="form-field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" [formField]="loginForm.email">
+      </div>
+      <div class="form-field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" [formField]="loginForm.password">
+      </div>
+    </div>
+    <button type="submit" class="form-button">Sign In</button>
+    <p class="form-noaccount">Don't have an account? <a class="form-redirect" href="/signup">Sign Up</a></p>
+
+  </form>
+</main>
