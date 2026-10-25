@@ -18,31 +18,38 @@ To install Subspace, there are two different ways.
 ### Git
 
 1. Clone the repository on your local device
+
 ```shell
-git clone https://github.com/SebMZI/SubSpace.git 
+git clone https://github.com/SebMZI/SubSpace.git
 cd SubSpace
 ```
 
 2. Install the dependencies
+
 ```shell
 npm install
 ```
 
 3. Start the server
+
 ```shell
 cd backend
 npm run start
 ```
+
 It will start the server on http://localhost:3000 (3000 by default)
 
 4. Start the client
+
 ```shell
 cd frontend
 npm run start
 ```
 
 ### Docker Compose (Recommended)
+
 Copy/Paste the docker compose file
+
 ```dockerfile
 services:
   frontend:
@@ -92,7 +99,5 @@ volumes:
 ```
 
 ## Roadmap
-- [ ] Chrome Extension
 
-## Appreciation
-My sincere thanks to [Mylano](https://github.com/Mylaano) for his generous help in designing the frontend.
+- [ ] Chrome Extension
